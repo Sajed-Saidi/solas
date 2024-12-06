@@ -1,32 +1,35 @@
 @extends('frontend.layouts.app')
 
-<style>
-    .swiper {
-        width: 100%;
-        /* height: 100%; */
-    }
+@push('style')
+    <style>
+        .swiper {
+            width: 100%;
+            /* height: 100%; */
+        }
 
-    .swiper-wrapper {
-        height: fit-content !important;
-    }
+        .swiper-wrapper {
+            height: fit-content !important;
+        }
 
-    .swiper-slide {
-        /* height: fit-content !important; */
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+        .swiper-slide {
+            /* height: fit-content !important; */
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .swiper-slide img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-</style>
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+@endpush
+
 @section('content')
     <main class="main">
         <!-- Hero Section -->
@@ -150,89 +153,43 @@
 
         {{-- Activities Section --}}
         <section id="activities" class="activities section">
-            <div class="container section-title" data-aos="fade-up" data-aos-delay="100">
+            <x-section-heading miniTitle="Activities" title="Experience With Us" routeText='View All'
+                route="{{ route('contents.showAll') . '?type=activity' }}" />
 
-                <div>
-                    <h2>Activities</h2>
-                    <div>
-                        <span>Experience</span>
-                        <span class="description-title">With Us</span>
-                        <a href="#readmore" class="float-end">
-                            View All<i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-
+            @php
+                $icons = ['bi-brightness-high', 'bi bi-binoculars', 'bi bi-box-seam'];
+            @endphp
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="100">
                         <ul class="nav nav-tabs aos-init aos-animate" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link show active" data-bs-toggle="tab" data-bs-target="#features-tab-1"
-                                    aria-selected="true" role="tab">
-                                    <i class="bi bi-binoculars"></i>
-                                    <div>
-                                        <h4 class="d-none d-lg-block">Modi sit est dela pireda nest</h4>
-                                        <p>
-                                            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                            in reprehenderit in voluptate
-                                            velit esse cillum dolore eu fugiat nulla pariatur
-                                        </p>
-                                        <form action="/">
-                                            <button class="btn btn-sm read-more" type="submit">
-                                                <div class="d-flex align-items-center">
-                                                    Read More
-                                                    <i class="bi bi-arrow-right"></i>
-                                                </div>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-2"
-                                    aria-selected="false" role="tab" tabindex="-1">
-                                    <i class="bi bi-box-seam"></i>
-                                    <div>
-                                        <h4 class="d-none d-lg-block">Unde praesenti mara setra le</h4>
-                                        <p>
-                                            Recusandae atque nihil. Delectus vitae non similique magnam molestiae sapiente
-                                            similique
-                                            tenetur aut voluptates sed voluptas ipsum voluptas
-                                        </p>
-                                        <form action="/">
-                                            <button class="btn btn-sm read-more" type="submit">
-                                                <div class="d-flex align-items-center">
-                                                    Read More
-                                                    <i class="bi bi-arrow-right"></i>
-                                                </div>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3"
-                                    aria-selected="false" role="tab" tabindex="-1">
-                                    <i class="bi bi-brightness-high"></i>
-                                    <div>
-                                        <h4 class="d-none d-lg-block">Pariatur explica nitro dela</h4>
-                                        <p>
-                                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                            deserunt mollit anim id est laborum
-                                            Debitis nulla est maxime voluptas dolor aut
-                                        </p>
-                                        <form action="/">
-                                            <button class="btn btn-sm read-more" type="submit">
-                                                <div class="d-flex align-items-center">
-                                                    Read More
-                                                    <i class="bi bi-arrow-right"></i>
-                                                </div>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </a>
-                            </li>
+                            @foreach ($activities as $key => $activity)
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link {{ $key == 0 ? 'show active' : '' }}" data-bs-toggle="tab"
+                                        data-bs-target="#features-tab-{{ $key }}" aria-selected="true"
+                                        role="tab">
+                                        <i class="{{ $icons[$key] }}"></i>
+                                        <div>
+                                            <h4 class="d-none d-lg-block">{{ $activity->title }}</h4>
+                                            <p class="truncate">
+                                                {{ $activity->description }}
+                                            </p>
+                                            <form id="activity-form-{{ $key }}"
+                                                action="{{ route('contents.show', $activity->id) }}" method="POST">
+                                                @csrf
+                                                @method('GET')
+                                                <button class="btn btn-sm read-more activity-btn" type="submit"
+                                                    data-key={{ $key }}>
+                                                    <div class="d-flex align-items-center">
+                                                        Read More
+                                                        <i class="bi bi-arrow-right"></i>
+                                                    </div>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul><!-- End Tab Nav -->
 
                     </div>
@@ -241,20 +198,18 @@
 
                         <div class="tab-content aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
 
-                            <div class="tab-pane fade active show" id="features-tab-1" role="tabpanel">
-                                <img src="{{ asset('frontend/assets/img/activities/act1.jpg') }}" alt=""
-                                    class="img-fluid">
-                            </div><!-- End Tab Content Item -->
-
-                            <div class="tab-pane fade" id="features-tab-2" role="tabpanel">
-                                <img src="{{ asset('frontend/assets/img/activities/act2.jpg') }}" alt=""
-                                    class="img-fluid">
-                            </div><!-- End Tab Content Item -->
-
-                            <div class="tab-pane fade" id="features-tab-3" role="tabpanel">
-                                <img src="{{ asset('frontend/assets/img/activities/act3.jpg') }}" alt=""
-                                    class="img-fluid">
-                            </div><!-- End Tab Content Item -->
+                            @foreach ($activities as $key => $activity)
+                                <div class="tab-pane fade {{ $key == 0 ? 'active show' : '' }}"
+                                    id="features-tab-{{ $key }}" role="tabpanel">
+                                    @if ($activity->images != null)
+                                        <img src="{{ asset('storage/' . $activity->images[0]) }}" alt=""
+                                            class="img-fluid">
+                                    @else
+                                        <img src="{{ asset('frontend/assets/img/activities/act' . $key + 1 . '.jpg') }}"
+                                            alt="" class="img-fluid">
+                                    @endif
+                                </div>
+                            @endforeach
                         </div>
 
                     </div>
@@ -267,89 +222,44 @@
 
         <!-- Articles Section -->
         <section id="articles" class="details section">
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-                <h2>Articles</h2>
-                <div>
-                    <span>Discover Our</span>
-                    <span class="description-title">Mission</span>
-                    <a href="#readmore" class="float-end">
-                        View All<i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            <!-- End Section Title -->
+            <x-section-heading miniTitle="Articles" title="Discover Our Mission" routeText='View All'
+                route="{{ route('contents.showAll') . '?type=article' }}" centered='true' />
 
             <div class="container">
                 <div class="swiper detailsSwiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="row gy-4 align-items-center features-item">
-                                <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
-                                    <img src="{{ asset('frontend/assets/img/details-1.png') }}" class="img-fluid"
-                                        alt="Supporting Individuals with Autism" />
+                        @foreach ($articles as $key => $article)
+                            <div class="swiper-slide">
+                                <div class="row gy-4 align-items-center features-item">
+                                    <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out"
+                                        data-aos-delay="100">
+                                        <img src="{{ asset($article->images != null ? 'storage/' . $article->images[0] : 'frontend/assets/img/details-1.png') }}"
+                                            class="img-fluid" alt="Supporting Individuals with Autism" />
+                                    </div>
+                                    <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
+                                        <h3>{{ $article->title }}</h3>
+                                        <p class="fst-italic">
+                                            {{ $article->description }}
+                                        </p>
+                                        <ul>
+                                            <li>
+                                                <i class="bi bi-check"></i><span>Personalized programs tailored to
+                                                    individual
+                                                    needs.</span>
+                                            </li>
+                                            <li>
+                                                <i class="bi bi-check"></i>
+                                                <span>Workshops and training for families and educators.</span>
+                                            </li>
+                                        </ul>
+                                        <a href="{{ route('contents.show', $article->id) }}"
+                                            class="read-more mt-1"><span>Learn More</span><i
+                                                class="bi bi-arrow-right"></i></a>
+                                    </div>
                                 </div>
-                                <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
-                                    <h3>Empowering Individuals with Autism</h3>
-                                    <p class="fst-italic">
-                                        Our mission is to support individuals with autism by providing
-                                        resources, education, and a community where they can thrive.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <i class="bi bi-check"></i><span>Personalized programs tailored to individual
-                                                needs.</span>
-                                        </li>
-                                        <li>
-                                            <i class="bi bi-check"></i>
-                                            <span>Workshops and training for families and educators.</span>
-                                        </li>
-                                        <li>
-                                            <i class="bi bi-check"></i>
-                                            <span>Inclusive events fostering acceptance and
-                                                understanding.</span>
-                                        </li>
-                                    </ul>
-                                    <a href="#" class="read-more mt-1"><span>Learn More</span><i
-                                            class="bi bi-arrow-right"></i></a>
-                                </div>
+
                             </div>
-
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="row gy-4 align-items-center features-item">
-                                <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
-                                    <img src="{{ asset('frontend/assets/img/details-1.png') }}" class="img-fluid"
-                                        alt="Supporting Individuals with Autism" />
-                                </div>
-                                <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
-                                    <h3>Empowering Individuals with Autism</h3>
-                                    <p class="fst-italic">
-                                        Our mission is to support individuals with autism by providing
-                                        resources, education, and a community where they can thrive.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <i class="bi bi-check"></i><span>Personalized programs tailored to individual
-                                                needs.</span>
-                                        </li>
-                                        <li>
-                                            <i class="bi bi-check"></i>
-                                            <span>Workshops and training for families and educators.</span>
-                                        </li>
-                                        <li>
-                                            <i class="bi bi-check"></i>
-                                            <span>Inclusive events fostering acceptance and
-                                                understanding.</span>
-                                        </li>
-                                    </ul>
-                                    <a href="#" class="read-more mt-3"><span>Learn More</span><i
-                                            class="bi bi-arrow-right"></i></a>
-                                </div>
-                            </div>
-
-                        </div>
-
+                        @endforeach
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
@@ -363,15 +273,7 @@
 
         <!-- Contact Section -->
         <section id="contact" class="contact section">
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-                <h2>Contact</h2>
-                <div>
-                    <span>Check Our</span>
-                    <span class="description-title">Contact</span>
-                </div>
-            </div>
-            <!-- End Section Title -->
+            <x-section-heading miniTitle="Contact" title="Check Our Contact" hideRight="true" />
 
             <div class="container" data-aos="fade" data-aos-delay="100">
                 <div class="row gy-4">
@@ -380,7 +282,7 @@
                             <i class="bi bi-geo-alt flex-shrink-0"></i>
                             <div>
                                 <h3>Address</h3>
-                                <p>A108 Adam Street, New York, NY 535022</p>
+                                <p>{{ $settings->address }}</p>
                             </div>
                         </div>
                         <!-- End Info Item -->
@@ -389,7 +291,7 @@
                             <i class="bi bi-telephone flex-shrink-0"></i>
                             <div>
                                 <h3>Call Us</h3>
-                                <p>+1 5589 55488 55</p>
+                                <p>{{ $settings->phone }}</p>
                             </div>
                         </div>
                         <!-- End Info Item -->
@@ -398,38 +300,42 @@
                             <i class="bi bi-envelope flex-shrink-0"></i>
                             <div>
                                 <h3>Email Us</h3>
-                                <p>info@example.com</p>
+                                <p>{{ $settings->email }}</p>
                             </div>
                         </div>
                         <!-- End Info Item -->
                     </div>
 
                     <div class="col-lg-8">
-                        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up"
-                            data-aos-delay="200">
+                        <form id="contact-form" action="{{ route('contact-us', $settings->email) }}" method="POST"
+                            class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                            @csrf
+                            @method('POST')
                             <div class="row gy-4">
                                 <div class="col-md-6">
                                     <input type="text" name="name" class="form-control" placeholder="Your Name"
-                                        required="" />
+                                        required />
                                 </div>
 
                                 <div class="col-md-6">
                                     <input type="email" class="form-control" name="email" placeholder="Your Email"
-                                        required="" />
+                                        required />
                                 </div>
 
                                 <div class="col-md-12">
                                     <input type="text" class="form-control" name="subject" placeholder="Subject"
-                                        required="" />
+                                        required />
                                 </div>
 
                                 <div class="col-md-12">
-                                    <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                                    <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
                                 </div>
 
                                 <div class="col-md-12 text-center">
                                     <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
+                                    <div class="error-message">
+                                        Error! Something went wrong...
+                                    </div>
                                     <div class="sent-message">
                                         Your message has been sent. Thank you!
                                     </div>
@@ -449,20 +355,100 @@
 
 @push('scripts')
     <script>
+        document.querySelectorAll('.activity-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const form = button.closest('form');
+                if (form) {
+                    form.submit();
+                } else {
+                    console.error('No form found for this button');
+                }
+            });
+        });
+
         var swiper = new Swiper(".detailsSwiper", {
-            direction: "horizontal", // Default direction
+            grabCursor: true,
+            direction: "horizontal",
             pagination: {
                 el: ".swiper-pagination",
                 clickable: true,
             },
-            // breakpoints: {
-            //     992: { // Apply when the viewport width is 768px or more
-            //         direction: "vertical",
-            //     },
-            //     0: { // Apply for smaller screens
-            //         direction: "horizontal",
-            //     },
-            // },
         });
+
+        const errorCont = document.querySelector(".error-message");
+        const successCont = document.querySelector(".sent-message");
+        const loading = document.querySelector(".loading");
+
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (errorCont.classList.contains('d-block')) {
+                errorCont.classList.remove("d-block");
+            }
+            if (successCont.classList.contains('d-block')) {
+                successCont.classList.remove("d-block");
+            }
+            loading.classList.add("d-block");
+
+            const formData = new FormData(this); // Use FormData directly
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken, // Add CSRF token
+                        'Accept': 'application/json',
+                    },
+                    body: formData, // Directly send the FormData
+                });
+
+                loading.classList.remove("d-block");
+
+                if (response.ok) {
+                    const result = await response.json();
+                    successCont.textContent = result.message;
+                    successCont.style.display = 'block';
+                    this.reset();
+                    hideMessage(successCont);
+                } else if (response.status === 422) {
+                    const result = await response.json();
+                    displayValidationErrors(result.errors);
+                } else {
+                    const result = await response.json();
+                    displayError(result.message);
+                }
+            } catch (error) {
+                displayError("An unexpected error occurred. Please try again later.");
+            }
+        });
+
+        function displayValidationErrors(errors) {
+            errorCont.innerHTML = "";
+            for (const [field, messages] of Object.entries(errors)) {
+                messages.forEach(message => {
+                    const errorItem = document.createElement("p");
+                    errorItem.textContent = `${field}: ${message}`;
+                    errorCont.appendChild(errorItem);
+                });
+            }
+            errorCont.classList.add("d-block");
+            hideMessage(errorCont);
+        }
+
+        function displayError(errorMessage) {
+            const errorCont = document.querySelector(".error-message");
+            errorCont.innerHTML = `<p>${errorMessage}</p>`;
+            errorCont.classList.add("d-block");
+            loading.classList.remove("d-block");
+            hideMessage(errorCont);
+        }
+
+        function hideMessage(element) {
+            setTimeout(() => {
+                element.classList.remove('d-block');
+                element.style.display = 'none';
+            }, 5000);
+        }
     </script>
 @endpush

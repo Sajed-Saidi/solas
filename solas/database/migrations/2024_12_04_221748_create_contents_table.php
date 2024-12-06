@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('status')->default('draft')->comment('draft||published||archived');
             $table->string('type')->comment('activity||article');
+            $table->json('images')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

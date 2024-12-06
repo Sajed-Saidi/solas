@@ -90,6 +90,24 @@ h6 {
     font-family: var(--heading-font);
 }
 
+.truncate {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-clamp: 2; /* For modern browsers */
+    -webkit-line-clamp: 2; /* For WebKit browsers */
+    height: 47px;
+}
+.truncate-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-clamp: 1; /* For modern browsers */
+    -webkit-line-clamp: 1; /* For WebKit browsers */
+}
+
 /* PHP Email Form Messages
 ------------------------------*/
 .php-email-form .error-message {
@@ -142,11 +160,43 @@ h6 {
     }
 }
 
+.read-more {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    font-family: var(--heading-font);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.read-more i {
+    font-size: 18px;
+    margin-left: 5px;
+    line-height: 0;
+    transition: 0.3s;
+}
+
+.read-more:hover {
+    color: white;
+    background: color-mix(in srgb, var(--accent-color), transparent 20%);
+    padding-right: 21px;
+}
+
+.read-more:hover i {
+    margin-left: 10px;
+}
+
 /*--------------------------------------------------------------
 # Global Header
 --------------------------------------------------------------*/
 .header {
-    --background-color: #3a98d4;
+    --background-color: rgba(255, 255, 255, 0);
     --default-color: #ffffff;
     --heading-color: #ffffff;
     color: var(--default-color);
@@ -1012,37 +1062,6 @@ section,
     margin-bottom: 0;
 }
 
-.about .content .read-more {
-    background: var(--accent-color);
-    color: var(--contrast-color);
-    font-family: var(--heading-font);
-    font-weight: 500;
-    font-size: 16px;
-    letter-spacing: 1px;
-    padding: 12px 24px;
-    border-radius: 5px;
-    transition: 0.3s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.about .content .read-more i {
-    font-size: 18px;
-    margin-left: 5px;
-    line-height: 0;
-    transition: 0.3s;
-}
-
-.about .content .read-more:hover {
-    background: color-mix(in srgb, var(--accent-color), transparent 20%);
-    padding-right: 19px;
-}
-
-.about .content .read-more:hover i {
-    margin-left: 10px;
-}
-
 .about .icon-box {
     background-color: var(--surface-color);
     padding: 50px 40px;
@@ -1180,37 +1199,6 @@ section,
     margin-bottom: 0;
 }
 
-.details .read-more {
-    background: var(--accent-color);
-    color: var(--contrast-color);
-    font-family: var(--heading-font);
-    font-weight: 500;
-    font-size: 16px;
-    letter-spacing: 1px;
-    padding: 12px 24px;
-    border-radius: 5px;
-    transition: 0.3s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.details .read-more i {
-    font-size: 18px;
-    margin-left: 5px;
-    line-height: 0;
-    transition: 0.3s;
-}
-
-.details .read-more:hover {
-    background: color-mix(in srgb, var(--accent-color), transparent 20%);
-    padding-right: 19px;
-}
-
-.details .read-more:hover i {
-    margin-left: 10px;
-}
-
 /*--------------------------------------------------------------
 # Contact Section
 --------------------------------------------------------------*/
@@ -1333,35 +1321,4 @@ section,
     font-weight: 600;
     margin: 0 0 10px 0;
     transition: 0.3s;
-}
-
-.activities button.read-more {
-    background: var(--accent-color);
-    color: var(--contrast-color);
-    font-family: var(--heading-font);
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: 1px;
-    padding: 6px 12px;
-    border-radius: 5px;
-    transition: 0.3s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.activities button.read-more i {
-    font-size: 16px;
-    margin-left: 5px;
-    line-height: 0;
-    transition: 0.3s;
-}
-
-.activities button.read-more:hover {
-    background: color-mix(in srgb, var(--accent-color), transparent 20%);
-    padding-right: 19px;
-}
-
-.activities button.read-more:hover i {
-    margin-left: 10px;
 }
