@@ -7,67 +7,43 @@ use App\Mail\ContactUsMail;
 use App\Models\Content;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class FrontendController extends Controller
 {
     public function index()
     {
-        $activities = Content::where(['type' => 'activity', 'status' => 'published'])->latest()->limit(3)->get();
-        if (\count($activities) == 0) {
-            $activities = [
-                [
-                    'title' => 'Understanding Autism Spectrum Disorder',
-                    'description' => 'An overview of Autism Spectrum Disorder (ASD) and its various characteristics.',
-                    'status' => 'published',
-                    'type' => 'activity',
-                    'images' => null,
-                ],
-                [
-                    'title' => 'How Solas Company Supports Families with Autism',
-                    'description' => 'Learn about the services Solas Company provides for families affected by autism.',
-                    'status' => 'published',
-                    'type' => 'activity',
-                    'images' => null,
-                ],
-                [
-                    'title' => 'Therapeutic Approaches for Autism',
-                    'description' => 'Exploring different therapeutic approaches used to support individuals with autism.',
-                    'status' => 'published',
-                    'type' => 'activity',
-                    'images' => null,
-                ],
+        if (Content::where(['type' => 'activity', 'status' => 'published'])->get()->count() > 0) {
+            $activity = Content::where(['type' => 'activity', 'status' => 'published'])->latest()->limit(1)->get()[0];
+        } else {
+            $activity = (object) [
+                'title' => 'Understanding Autism Spectrum Disorder',
+                'description' => 'An overview of Autism Spectrum Disorder (ASD) and its various characteristics.',
+                'status' => 'published',
+                'type' => 'activity',
+                'images' => null,
             ];
         }
 
-        $articles = Content::where(['type' => 'article', 'status' => 'published'])->latest()->limit(3)->get();
-        if (\count($articles) == 0) {
-            $articles = [
-                [
-                    'title' => 'Understanding Autism Spectrum Disorder',
-                    'description' => 'An overview of Autism Spectrum Disorder (ASD) and its various characteristics.',
-                    'status' => 'published',
-                    'type' => 'article',
-                    'images' => null,
-                ],
-                [
-                    'title' => 'How Solas Company Supports Families with Autism',
-                    'description' => 'Learn about the services Solas Company provides for families affected by autism.',
-                    'status' => 'published',
-                    'type' => 'article',
-                    'images' => null,
-                ],
-                [
-                    'title' => 'Therapeutic Approaches for Autism',
-                    'description' => 'Exploring different therapeutic approaches used to support individuals with autism.',
-                    'status' => 'published',
-                    'type' => 'article',
-                    'images' => null,
-                ],
+        if (Content::where(['type' => 'article', 'status' => 'published'])->get()->count() > 0) {
+            $article = Content::where(['type' => 'article', 'status' => 'published'])->latest()->limit(1)->get()[0];
+        } else {
+            $article = (object) [
+                'title' => 'Understanding Autism Spectrum Disorder',
+                'description' => 'Autism Spectrum Disorder (ASD) is a complex developmental condition that involves persistent challenges in social interaction, communication, and behavior. This article provides an in-depth exploration of the characteristics of ASD, its varying manifestations, and the impact it has on individuals and their families. It also sheds light on the importance of early diagnosis, intervention, and the need for supportive environments to help individuals with ASD thrive.',
+                'status' => 'published',
+                'type' => 'article',
+                'images' => null,
             ];
         }
-        return view('frontend.index', \compact('activities', 'articles'));
+        return view('frontend.index', [
+            'article' => (object)$article,
+            'activity' => (object) $activity,
+        ]);
     }
 
     public function show(Content $content)
@@ -126,12 +102,15 @@ class FrontendController extends Controller
         $search = $request->has('search') ? \trim($request->search) : null;
 
         $contents = Content::query()
+            ->where('status', 'published')
             ->when($type != 'all' && $type != '', function ($query) use ($type) {
-                return $query->where(['type' => $type, 'status' => 'published']);
+                return $query->where('type', $type);
             })
             ->when($search != null, function ($query) use ($search) {
-                return $query->where('title', 'LIKE', '%' . $search . '%')
-                    ->orWhere('description', 'LIKE', '%' . $search . '%');
+                return $query
+                    ->where('title', 'LIKE', '%' . $search . '%')
+                    ->orWhere('description', 'LIKE', '%' . $search . '%')
+                ;
             })
             ->paginate(6);
 

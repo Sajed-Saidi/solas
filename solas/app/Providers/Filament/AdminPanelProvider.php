@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName($website_name)
+            ->homeUrl('/')
             ->login()
             ->colors([
                 'primary' => '#3a98d4',

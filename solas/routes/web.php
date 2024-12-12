@@ -8,3 +8,6 @@ Route::post('/contact-us', [FrontendController::class, 'contactUs'])->name('cont
 
 Route::get('/contents/show/{content}', [FrontendController::class, 'show'])->name('contents.show');
 Route::get('/contents/all', [FrontendController::class, 'showAll'])->name('contents.showAll');
+
+
+Route::get('lang/{lang}', [FrontendController::class, 'changeLang'])->name('lang');

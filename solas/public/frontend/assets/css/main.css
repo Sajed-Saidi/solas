@@ -165,7 +165,7 @@ h6 {
     color: var(--contrast-color);
     font-family: var(--heading-font);
     font-weight: 500;
-    font-size: 16px;
+    font-size: 15px;
     letter-spacing: 1px;
     padding: 8px 16px;
     border-radius: 5px;
@@ -1282,7 +1282,6 @@ section,
 .contact .php-email-form button[type="submit"]:hover {
     background: color-mix(in srgb, var(--accent-color), transparent 25%);
 }
-
 /* Activities Page */
 
 .activities a.nav-link {

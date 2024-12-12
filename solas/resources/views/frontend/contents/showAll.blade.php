@@ -68,7 +68,16 @@
             border-radius: 0.375rem;
         }
 
-        /* Pagination */
+        .content-card .content-type {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 19px;
+            padding: 10px 20px;
+            background: color-mix(in srgb, var(--accent-color), transparent 95%);
+            color: var(--accent-color);
+            border-radius: 7px;
+            display: inline-block;
+        }
 
         .pagination .page-link {
             color: var(--heading-color);
@@ -104,11 +113,11 @@
     <main class="all-content p-5">
         {{-- <x-section-heading miniTitle="Contents" title="Check Our Content" route="{{ url()->previous() }}" routeText="Back" /> --}}
         <x-section-heading miniTitle="Content" title="Check Our Content" hideRight="true">
-            <form class="mt-5 mt-md-0" action="{{ route('contents.showAll') }}" method="GET">
+            <form id="search-form" class="mt-5 mt-md-0" action="{{ route('contents.showAll') }}" method="GET">
                 @csrf
                 @method('GET')
                 <div class="input-group mb-3">
-                    <select name="type" class="form-select" style="max-width: 150px;">
+                    <select id="search-type" name="type" class="form-select" style="max-width: 150px;">
                         <option value="">Select Content Type</option>
                         <option {{ $type == 'all' ? 'selected' : '' }} value="all">All</option>
                         <option {{ $type == 'activity' ? 'selected' : '' }} value="activity">Activities</option>
@@ -123,6 +132,7 @@
             </form>
 
         </x-section-heading>
+
         <div class="container">
             @if (count($contents) > 0)
                 <div class="row">
@@ -149,8 +159,17 @@
                     {!! $contents->withQueryString()->links('pagination::bootstrap-5') !!}
                 </div>
             @else
-                <h1 class="text-center bg-white p-4 shadow-sm">No Contents Found</h1>
+                <h4 class="text-center bg-white p-4 shadow-sm">No Contents Found</h4>
             @endif
         </div>
     </main>
 @endsection
+
+
+@push('scripts')
+    <script>
+        document.querySelector('#search-type').addEventListener('change', function() {
+            document.querySelector('#search-form').submit();
+        });
+    </script>
+@endpush

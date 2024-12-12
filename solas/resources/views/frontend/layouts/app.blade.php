@@ -3,13 +3,14 @@
 
     <head>
         <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>@yield('title', $settings->website_name)</title>
-        <meta name="description" content="{{ $settings->description }}" />
-        <meta name="keywords" content="{{ $settings->keywords }}" />
+        <meta name="description" content="{{ $settings->meta_description }}" />
+        <meta name="keywords" content="{{ $settings->meta_keywords }}" />
 
         <!-- Favicons -->
         <link href="{{ asset('frontend/assets/img/favicon.ico') }}" rel="icon" />
@@ -35,6 +36,7 @@
     </head>
 
     <body class="index-page">
+
         @include('frontend.layouts.header')
 
         @yield('content')
@@ -55,6 +57,8 @@
         <script src="{{ asset('frontend/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
         <script src="{{ asset('frontend/assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
         <script src="{{ asset('frontend/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+        <script src="{{ asset('frontend/assets/js/jquery-3.7.1.js') }}"></script>
+        <script src="{{ asset('frontend/assets/js/Autolinker.min.js') }}"></script>
 
         <!-- Main JS File -->
         <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
@@ -76,6 +80,65 @@
         </script>
 
         @stack('scripts')
+
+        <script type="text/javascript" defer src="{{ asset('frontend/assets/js/google.translate.js') }}"></script>
+
+        <script defer type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                        pageLanguage: 'bg',
+                        includedLanguages: 'en,ar',
+                        autoDisplay: false,
+                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                    },
+                    'google_translate_element')
+            }
+        </script>
+
+        <script>
+            const myTextEl = document.getElementById('articles');
+            myTextEl.innerHTML = Autolinker.link(myTextEl.innerHTML);
+        </script>
+
+        <script>
+            function adjustTextDirection() {
+                const elements = document.querySelectorAll('div, p, span, a');
+
+                elements.forEach(element => {
+                    const content = element.textContent.trim();
+
+                    // Regex to detect RTL characters (Arabic, Hebrew, etc.)
+                    const hasRTL = /[\u0590-\u06FF]/.test(content);
+                    const hasLTR = /[a-zA-Z0-9]/.test(content);
+
+                    // If both RTL and LTR characters are present, handle as mixed
+                    if (hasRTL && hasLTR) {
+                        element.style.direction = 'rtl'; // Base direction
+                        element.style.unicodeBidi = 'embed'; // Properly arranges mixed text
+                    } else if (hasRTL) {
+                        // Pure RTL content
+                        element.setAttribute('dir', 'rtl');
+                        element.style.unicodeBidi = 'normal';
+                    } else if (hasLTR) {
+                        // Pure LTR content
+                        element.setAttribute('dir', 'ltr');
+                        element.style.unicodeBidi = 'normal';
+                    }
+                });
+            }
+
+            // Run the function after the page loads
+            document.addEventListener('DOMContentLoaded', adjustTextDirection);
+
+            // Observe changes to the <html> lang attribute
+            const htmlElement = document.querySelector('html');
+
+            const observer = new MutationObserver(() => adjustTextDirection);
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['lang']
+            });
+        </script>
 
     </body>
 

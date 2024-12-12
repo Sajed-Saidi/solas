@@ -14,10 +14,8 @@
                     <p><strong>Email:</strong> <span>{{ $settings->email }}</span></p>
                 </div>
                 <div class="social-links d-flex mt-4">
-                    <a href=""><i class="bi bi-twitter"></i></a>
-                    <a href=""><i class="bi bi-facebook"></i></a>
-                    <a href=""><i class="bi bi-instagram"></i></a>
-                    <a href=""><i class="bi bi-linkedin"></i></a>
+                    <a href="{{ $settings->facebook }}"><i class="bi bi-facebook"></i></a>
+                    <a href="{{ $settings->instagram }}"><i class="bi bi-instagram"></i></a>
                 </div>
             </div>
 
