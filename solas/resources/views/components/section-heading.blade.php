@@ -5,11 +5,14 @@
     'route' => url()->previous(),
     'centered' => false,
     'hideRight' => false,
+    'hideMiniTitle' => false,
 ])
 
 <div class="container section-title {{ $centered ? 'mb-md-5' : '' }}">
     <div>
-        <h2 data-aos="fade-right" data-aos-delay="100">{{ $miniTitle }}</h2>
+        @if (!$hideMiniTitle)
+            <h2 data-aos="fade-right" data-aos-delay="100">{{ $miniTitle }}</h2>
+        @endif
         <div class="d-flex justify-content-between flex-column flex-md-row">
             <div data-aos="fade-right" data-aos-delay="100">{{ $title }}</div>
             @if (!$hideRight)

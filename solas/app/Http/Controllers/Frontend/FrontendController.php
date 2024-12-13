@@ -99,19 +99,13 @@ class FrontendController extends Controller
     public function showAll(Request $request)
     {
         $type = $request->type ?? 'all';
-        $search = $request->has('search') ? \trim($request->search) : null;
 
         $contents = Content::query()
             ->where('status', 'published')
             ->when($type != 'all' && $type != '', function ($query) use ($type) {
                 return $query->where('type', $type);
             })
-            ->when($search != null, function ($query) use ($search) {
-                return $query
-                    ->where('title', 'LIKE', '%' . $search . '%')
-                    ->orWhere('description', 'LIKE', '%' . $search . '%')
-                ;
-            })
+            ->latest()
             ->paginate(6);
 
         return view('frontend.contents.showAll', compact('type', 'contents'));

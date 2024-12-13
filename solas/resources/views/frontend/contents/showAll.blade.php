@@ -111,8 +111,9 @@
 
 @section('content')
     <main class="all-content p-5">
-        {{-- <x-section-heading miniTitle="Contents" title="Check Our Content" route="{{ url()->previous() }}" routeText="Back" /> --}}
-        <x-section-heading miniTitle="Content" title="Check Our Content" hideRight="true">
+        <x-section-heading miniTitle="{{ ($type == 'all' ? 'Content' : $type == 'activity') ? 'Activities' : 'Articles' }}"
+            title="{{ ($type == 'all' ? 'Check All Content' : $type == 'activity') ? 'Check our latest activities' : 'Learn more about autism' }}"
+            hideRight="true">
             <form id="search-form" class="mt-5 mt-md-0" action="{{ route('contents.showAll') }}" method="GET">
                 @csrf
                 @method('GET')
@@ -123,11 +124,6 @@
                         <option {{ $type == 'activity' ? 'selected' : '' }} value="activity">Activities</option>
                         <option {{ $type == 'article' ? 'selected' : '' }} value="article">Articles</option>
                     </select>
-                    <input name="search" type="text" class="form-control" placeholder="Search..."
-                        value="{{ request('search') }}">
-                    <button class="btn btn-secondary" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
                 </div>
             </form>
 

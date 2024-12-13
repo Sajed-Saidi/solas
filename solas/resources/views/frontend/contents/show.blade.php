@@ -44,14 +44,13 @@
 
 @section('content')
     <main class="single-content p-5">
-        <x-section-heading miniTitle="{{ $content->type == 'activity' ? 'Activities' : 'Articles' }}"
-            title="Explore with us" />
+        <x-section-heading hideMiniTitle='true' title="{{ $content->type == 'activity' ? 'Activities' : 'Articles' }}" />
         <div class="container">
             <div class="content row">
                 @if (!$content)
                     <h1>No Content Found</h1>
                 @else
-                    <div class="col-md-7 mb-5">
+                    <div class="col-md-7 mb-5 contentLinker">
                         <h3 class="content-title" data-aos="fade-up" data-aos-delay="100">
                             {{ $content->title }}
                         </h3>
@@ -93,8 +92,6 @@
             </div>
         </div>
         @endif
-        </div>
-        </div>
 
     </main>
 @endsection

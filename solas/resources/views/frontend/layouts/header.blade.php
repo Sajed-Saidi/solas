@@ -9,27 +9,17 @@
         </a>
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a href="{{ route('/') }}" class="active">Home</a></li>
-                <li class="dropdown">
-                    <a href="#"><span>Activties</span>
-                        <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                    <ul>
-                        <li><a href="{{ route('contents.showAll') . '?type=activity' }}">All</a></li>
-                        @if ($isHome)
-                            <li><a href="#activities">Latest</a></li>
-                        @endif
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#"><span>Articles</span>
-                        <i class="bi bi-chevron-down toggle-dropdown"></i>
+                <li><a href="{{ route('/') }}" class="{{ Route::is('/') ? 'active' : '/' }}">Home</a></li>
+                <li><a href="{{ route('contents.showAll') . '?type=activity' }}"
+                        class="{{ Route::is('contents.showAll') && ($type == 'all' || $type == 'activity') ? 'active' : '' }}">
+                        Activities
                     </a>
-                    <ul>
-                        <li><a href="{{ route('contents.showAll') . '?type=activity' }}">All</a></li>
-                        @if ($isHome)
-                            <li><a href="#articles">Latest</a></li>
-                        @endif
-                    </ul>
+                </li>
+                <li>
+                    <a href="{{ route('contents.showAll') . '?type=article' }}"
+                        class="{{ Route::is('contents.showAll') && ($type == 'all' || $type == 'activity') ? 'active' : '' }}">
+                        Articles
+                    </a>
                 </li>
                 @if ($isHome)
                     <li><a href="#about">About</a></li>

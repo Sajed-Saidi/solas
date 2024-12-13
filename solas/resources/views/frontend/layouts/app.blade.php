@@ -16,13 +16,6 @@
         <link href="{{ asset('frontend/assets/img/favicon.ico') }}" rel="icon" />
         <link href="{{ asset('frontend/assets/img/favicon.ico') }}" rel="apple-touch-icon" />
 
-        <!-- Fonts -->
-        {{-- <link href="https://fonts.googleapis.com" rel="preconnect" />
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-            rel="stylesheet" /> --}}
-
         <!-- Vendor CSS Files -->
         <link href="{{ asset('frontend/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('frontend/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
@@ -38,9 +31,7 @@
     <body class="index-page">
 
         @include('frontend.layouts.header')
-
         @yield('content')
-
         @include('frontend.layouts.footer')
 
         <!-- Scroll Top -->
@@ -81,23 +72,14 @@
 
         @stack('scripts')
 
-        <script type="text/javascript" defer src="{{ asset('frontend/assets/js/google.translate.js') }}"></script>
-
-        <script defer type="text/javascript">
-            function googleTranslateElementInit() {
-                new google.translate.TranslateElement({
-                        pageLanguage: 'bg',
-                        includedLanguages: 'en,ar',
-                        autoDisplay: false,
-                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-                    },
-                    'google_translate_element')
-            }
-        </script>
-
         <script>
-            const myTextEl = document.getElementById('articles');
-            myTextEl.innerHTML = Autolinker.link(myTextEl.innerHTML);
+            const contentLinker = document.querySelectorAll('.contentLinker');
+
+            contentLinker.forEach(function(cont) {
+                console.log(cont);
+
+                cont.innerHTML = Autolinker.link(cont.innerHTML);
+            });
         </script>
 
         <script>
@@ -127,16 +109,8 @@
                 });
             }
 
-            // Run the function after the page loads
-            document.addEventListener('DOMContentLoaded', adjustTextDirection);
-
-            // Observe changes to the <html> lang attribute
-            const htmlElement = document.querySelector('html');
-
-            const observer = new MutationObserver(() => adjustTextDirection);
-            observer.observe(document.documentElement, {
-                attributes: true,
-                attributeFilter: ['lang']
+            $.ready(function() {
+                adjustTextDirection();
             });
         </script>
 
